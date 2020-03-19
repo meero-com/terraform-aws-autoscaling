@@ -297,3 +297,6 @@ variable "service_linked_role_arn" {
   default     = ""
 }
 
+variable "instance_types" {
+  type = list(map(string))
+}

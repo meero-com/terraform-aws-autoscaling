@@ -110,7 +110,20 @@ resource "aws_autoscaling_group" "this" {
     id      = var.create_lt ? element(concat(aws_launch_template.this.*.id, [""]), 0) : var.launch_template
     version = "$Latest"
   }
-
+  mixed_instances_policy {
+    launch_template {
+      launch_template_specification {
+        launch_template_id = "${aws_launch_template.this.*.id}"
+      }
+      dynamic "override" {
+          for_each = var.instance_types
+          content {
+            instance_type = override.value["type"]
+            weighted_capacity = override.value["weight"]
+          }
+      }
+    }
+  }
   tags = concat(
     [
       {
