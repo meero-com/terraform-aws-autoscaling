@@ -113,7 +113,7 @@ resource "aws_autoscaling_group" "this" {
   mixed_instances_policy {
     launch_template {
       launch_template_specification {
-        launch_template_id = "${aws_launch_template.this.0.id}"
+        launch_template_id = aws_launch_template.this.0.id
       }
       dynamic "override" {
           for_each = var.instance_types
